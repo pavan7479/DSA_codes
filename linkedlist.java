@@ -13,7 +13,6 @@ class LinkedList {
         public Node(String data) {
             this.data = data;
             this.next = null;
-            size++;
         }
     }
 
@@ -22,57 +21,52 @@ class LinkedList {
         if (head == null) {
             newNode.next = null;
             head = newNode;
-            return;
+        } else {
+            newNode.next = head;
+            head = newNode;
         }
-
-        newNode.next = head;
-        head = newNode;
+        size++;
     }
 
     public void addLast(String data) {
         Node newNode = new Node(data);
         if (head == null) {
-            newNode.next = null;
             head = newNode;
-            return;
+        } else {
+            Node curnode = head;
+            while (curnode.next != null) {
+                curnode = curnode.next;
+            }
+            curnode.next = newNode;
         }
-        Node curnode = head;
-        while (curnode.next != null) {
-            curnode = curnode.next;
-        }
-        curnode.next = newNode;
-        newNode.next = null;
+        size++;
     }
 
-    public void delFirst(){
-        if(head==null){
-            System.out.println("your linked_list is empty");
-            return;}
-            size--;
+    public void delFirst() {
+        if (head == null) {
+            System.out.println("Your linked list is empty");
+            return;
+        }
         head = head.next;
+        size--;
     }
 
-    public void delLast(){
-        if(head==null){
-            System.out.println("your linked_list is empty");
-            return;}
-            size--;
-        if(head.next==null){
-            head=null;
+    public void delLast() {
+        if (head == null) {
+            System.out.println("Your linked list is empty");
             return;
         }
-        Node secondLast=head;
-        Node last=head.next;
-        while(last.next!=null){
-            last=last.next;
-            secondLast=secondLast.next;
+        if (head.next == null) {
+            head = null;
+        } else {
+            Node secondLast = head;
+            while (secondLast.next.next != null) {
+                secondLast = secondLast.next;
+            }
+            secondLast.next = null;
         }
-
-        secondLast.next=null;
-
+        size--;
     }
-
-
 
     public void display() {
         Node current = head;
@@ -83,31 +77,69 @@ class LinkedList {
         System.out.println("null");
     }
 
+    public void deleteMiddle(int k) {
+        if (k > size || k <= 0) {
+            System.out.println("Invalid position");
+            return;
+        }
+        if (head == null) return;
+        if (k == 1) {
+            head = head.next;
+        } else {
+            Node temp = head;
+            for (int i = 1; i < k - 1; i++) {
+                temp = temp.next;
+            }
+            temp.next = temp.next.next;
+        }
+        size--;
+    }
+
+    public void addMiddle(int k, String data) {
+        if (k > size + 1 || k <= 0) {
+            System.out.println("Invalid position");
+            return;
+        }
+        Node newNode = new Node(data);
+        if (k == 1) {
+            newNode.next = head;
+            head = newNode;
+        } else {
+            Node temp = head;
+            for (int i = 1; i < k - 1; i++) {
+                temp = temp.next;
+            }
+            newNode.next = temp.next;
+            temp.next = newNode;
+        }
+        size++;
+    }
+
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
-       ;
         list.addFirst("a");
         list.addFirst("b");
         list.addFirst("c");
         list.display();
-
-        System.out.println("added -a");
-        System.out.println("size of the linked list is "+list.size);
-        list.delFirst();
         
-
+        System.out.println("Size of the linked list is " + list.size);
+        list.delFirst();
         list.display();
-        System.out.println("deleted at first -a");
 
         list.addLast("sai");
-
         list.display();
-        System.out.println("adedd at last sai");
+        
 
         list.delLast();
+       
         list.display();
-        System.out.println("deleted last sai");
 
-        System.out.println("size of the linked list is "+list.size);
+        System.out.println("Size of the linked list is " + list.size);
+        list.deleteMiddle(2);
+        list.display();
+
+        list.addMiddle(2, "inserted");
+        System.out.println("Inserted at position 2");
+        list.display();
     }
 }
